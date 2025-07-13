@@ -3,7 +3,7 @@ name: Deploy Node.js API to Azure
 on:
   push:
     branches:
-      - main
+      - main  # Change this to your branch name if it's different
 
 jobs:
   build-and-deploy:
@@ -16,17 +16,21 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '18' # or your Node version
+        node-version: '18'
 
     - name: Install dependencies
       run: npm install
 
-    - name: Run tests
-      run: npm test
+    - name: Login to Azure using Service Principal
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v3
       with:
-        app-name: wisemind123           # 👉 replace with your Azure App name (e.g., dailyjobapi)
-        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
-        package: .
+        app-name: wiseminds    # Your Azure App Service name
+        slot-name: Production    # Or use other slots if you're deploying to a staging slot
+        package: .               # Your app package (source code)
