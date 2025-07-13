@@ -25,6 +25,6 @@ jobs:
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v3
       with:
-        app-name: YOUR_AZURE_APP_NAME     # <-- Replace this
+        app-name: wisemind123     # <-- Replace this
         publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
         package: .
