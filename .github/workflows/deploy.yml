@@ -1,5 +1,4 @@
-# .github/workflows/deploy.yml
-name: Deploy to Azure
+name: Deploy Node.js API to Azure
 
 on:
   push:
@@ -12,19 +11,22 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '18'
+        node-version: '18' # or your Node version
 
     - name: Install dependencies
       run: npm install
 
+    - name: Run tests
+      run: npm test
+
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v3
       with:
-        app-name: wisemind123     # <-- Replace this
+        app-name: wisemind123           # 👉 replace with your Azure App name (e.g., dailyjobapi)
         publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
         package: .
