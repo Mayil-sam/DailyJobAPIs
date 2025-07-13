@@ -2,22 +2,38 @@ const express = require('express');
 const cors = require('cors');
 const { connectToDB, sql } = require('./db');
 
+require('dotenv').config(); // for local .env support
+
 const app = express();
 app.use(express.json());
 app.use(cors());
+
 const PORT = process.env.PORT || 3000;
 
 process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection:', reason);
 });
 
+// Basic routes
 app.get('/', (req, res) => {
   res.send('Azure SQL API is running!');
 });
-app.get('/Test', async (req, res) =>{
-    res.json({ message: 'Locations endpoint is working!' });
+
+app.get('/Test', (req, res) => {
+  res.json({ message: 'Test endpoint is working!' });
 });
 
+// Debug route
+app.get('/checkdb', async (req, res) => {
+  try {
+    const result = await sql.query`SELECT GETDATE() AS current_time`;
+    res.json({ status: 'Connected to DB', time: result.recordset[0].current_time });
+  } catch (err) {
+    res.status(500).json({ error: 'DB connection failed', details: err.message });
+  }
+});
+
+// API routes
 app.get('/locations', async (req, res) => {
   try {
     const result = await sql.query('SELECT * FROM [dbo].[locations]');
@@ -30,7 +46,7 @@ app.get('/locations', async (req, res) => {
 
 app.get('/users', async (req, res) => {
   try {
-    const result = await sql.query('select * from [dbo].[users]');
+    const result = await sql.query('SELECT * FROM [dbo].[users]');
     res.json(result.recordset);
   } catch (err) {
     console.error('SQL error', err);
@@ -40,7 +56,7 @@ app.get('/users', async (req, res) => {
 
 app.get('/dailyJobs', async (req, res) => {
   try {
-    const result = await sql.query('select * from [dbo].[orders]');
+    const result = await sql.query('SELECT * FROM [dbo].[orders]');
     res.json(result.recordset);
   } catch (err) {
     console.error('SQL error', err);
@@ -71,14 +87,13 @@ app.post('/register', async (req, res) => {
         (${username}, ${password}, ${full_name}, 'staff', 1, ${mobile_number}, ${email})
     `;
 
-    res.status(200).json({ message: 'User registered successfully',issuccess: true });
+    res.status(200).json({ message: 'User registered successfully', issuccess: true });
 
   } catch (err) {
     console.error('SQL Insert Error:', err);
     res.status(500).json({ error: 'Error inserting user' });
   }
 });
-
 
 app.post('/createdailyjob', async (req, res) => {
   const {
@@ -137,8 +152,6 @@ app.post('/createdailyjob', async (req, res) => {
   }
 });
 
-
-
 app.post('/Login', async (req, res) => {
   const { username, password } = req.body;
 
@@ -164,14 +177,13 @@ app.post('/Login', async (req, res) => {
   }
 });
 
-
-// Connect to DB and start server
+// Connect to DB (non-blocking) and start server
 connectToDB()
   .then(() => {
-    console.log('Connected to DB successfully');
+    console.log('✅ Connected to DB');
   })
   .catch(err => {
-    console.error('⚠️ Failed to connect to DB:', err);
+    console.error('⚠️ DB Connection Failed:', err);
   })
   .finally(() => {
     app.listen(PORT, () => {
