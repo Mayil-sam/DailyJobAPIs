@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",       // ✅ added for Azure to run your app
-    "test": "echo \"No tests yet\"" // ✅ updated to prevent failure
+    "start": "node index.js",      
+    "test": "echo \"No tests yet\""
   },
   "keywords": [],
   "author": "",
