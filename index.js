@@ -168,10 +168,13 @@ app.post('/Login', async (req, res) => {
 // Connect to DB and start server
 connectToDB()
   .then(() => {
-    app.listen(PORT, () => {
-      console.log(`Server running at http://localhost:${PORT}`);
-    });
+    console.log('Connected to DB successfully');
   })
   .catch(err => {
-    console.error('Failed to connect to DB:', err);
+    console.error('⚠️ Failed to connect to DB:', err);
+  })
+  .finally(() => {
+    app.listen(PORT, () => {
+      console.log(`✅ Server running on port ${PORT}`);
+    });
   });
