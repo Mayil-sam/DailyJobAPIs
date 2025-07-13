@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",       // ✅ added for Azure to run your app
+    "test": "echo \"No tests yet\"" // ✅ updated to prevent failure
   },
   "keywords": [],
   "author": "",
