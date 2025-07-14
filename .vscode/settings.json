@@ -1,0 +1,9 @@
+{
+    "azureFunctions.deploySubpath": ".",                   // Path to deploy the Azure Functions code from ('.' refers to the current directory)
+    "azureFunctions.postDeployTask": "npm install (functions)", // Task to run after deploying the function (installs dependencies)
+    "azureFunctions.projectLanguage": "JavaScript",        // The programming language used for the Azure Functions project (JavaScript)
+    "azureFunctions.projectRuntime": "~4",                  // Specifies the runtime version (runtime ~4 means a version compatible with v4 of Azure Functions)
+    "debug.internalConsoleOptions": "neverOpen",            // Prevents opening the internal console when debugging starts (stays closed by default)
+    "azureFunctions.projectLanguageModel": 4,               // Azure Functions language model version (v4)
+    "azureFunctions.preDeployTask": "npm prune (functions)" // Task to run before deployment (prunes unnecessary packages in the `node_modules`)
+}

@@ -1,0 +1,14 @@
+*.js.map
+*.ts
+.git*
+.vscode
+__azurite_db*__.json
+__blobstorage__
+__queuestorage__
+local.settings.json
+test
+tsconfig.json
+# Ignore local settings and build directories
+local.settings.json        # Do not deploy local settings
+bin/                       # Do not deploy build files
+node_modules/              # Exclude dependencies (they will be installed on the server)
